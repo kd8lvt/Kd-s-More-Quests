@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+	<QuestScriptDef>
+		<defName>OpportunitySite_SlaverTroupe</defName>
+		<rootSelectionWeight>0.8</rootSelectionWeight>
+		<rootMinPoints>400</rootMinPoints>
+		<autoAccept>true</autoAccept>
+		<questNameRules>
+			<rulesStrings>
+				<li>questName->[asker_nameDef]'s Unfortune</li>
+				<li>questName->[asker_nameDef]'s Plight</li>
+				<li>questName->[asker_nameDef]'s Fate</li>
+				<li>questName->The Fate of [asker_nameDef]</li>
+				<li>questName->Freedom for [asker_nameDef]</li>
+				<li>questName->Freedom for the Unfortunate</li>
+				<li>questName->Free the Slaves!</li>
+				<li>questName->Slaver's Hideout</li>
+			</rulesStrings>
+		</questNameRules>
+		<questDescriptionRules>
+			<rulesStrings>
+				<li>questDescription->You have gotten a message! [asker_nameFull] has stolen a radio, and is asking for your help!\nApparently, a troupe of slavers from [siteFaction_name] have captured them, and are heading to their main camp! [asker_nameDef] is asking you to meet the slavers at their main camp and rescue them.\n\nIn return, [asker_nameDef] is willing to join your colony, and has overheard the slavers talking about things they have back at their camp, which includes [allRewardsDescriptions]</li>
+			</rulesStrings>
+		</questDescriptionRules>
+		<root Class="QuestNode_Sequence">
+			<nodes>
+				<li Class="QuestNode_SubScript">
+					<def>Util_RandomizePointsChallengeRating</def>
+					<parms>
+						<pointsFactorTwoStar>1.5</pointsFactorTwoStar>
+						<pointsFactorThreeStar>2</pointsFactorThreeStar>
+					</parms>
+				</li>
+				<li Class="QuestNode_SubScript">
+					<def>Util_AdjustPointsForDistantFight</def>
+				</li>
+				<li Class="QuestNode_GetMap" />
+
+				<li Class="QuestNode_GetPawn">
+					<storeAs>asker</storeAs>
+					<allowFactionLeader>false</allowFactionLeader>
+					<allowPermanentEnemyFaction>false</allowPermanentEnemyFaction>
+				</li>
+
+				<li Class="QuestNode_GetSiteTile">
+					<storeAs>siteTile</storeAs>
+					<preferCloserTiles>true</preferCloserTiles>
+				</li>
+
+				<li Class="QuestNode_GetSitePartDefsByTagsAndFaction">
+					<storeAs>sitePartDefs</storeAs>
+					<storeFactionAs>siteFaction</storeFactionAs>
+					<sitePartTags>
+						<li><tag>SlaverCamp</tag></li>
+					</sitePartTags>
+					<mustBeHostileToFactionOf>$asker</mustBeHostileToFactionOf>
+				</li>
+
+				<li Class="QuestNode_GetDefaultSiteParams">
+					<tile>$siteTile</tile>
+					<faction>$siteFaction</faction>
+					<sitePartDefs>$sitePartDefs</sitePartDefs>
+					<storeSiteParamsAs>sitePartsParams</storeSiteParamsAs>
+				</li>
+			</nodes>
+		</root>
+	</QuestScriptDef>
+
+</Defs>
